@@ -6,10 +6,6 @@ import requests
 
 HF_DAILY_PAPERS_URL = "https://huggingface.co/api/daily_papers"
 
-# -------------------------------------------------------------------
-# 1. FETCH & SAVE DAILY PAPERS
-# -------------------------------------------------------------------
-
 def fetch_hf_daily_papers():
     response = requests.get(HF_DAILY_PAPERS_URL)
     if response.status_code != 200:
@@ -62,9 +58,6 @@ def write_markdown_file(papers, title_header, folder_name, file_name):
 
     print(f"Successfully generated: {file_path}")
 
-# -------------------------------------------------------------------
-# 2. LOCAL AGGREGATION (READ DAILY FILES -> GENERATE WEEKLY/MONTHLY)
-# -------------------------------------------------------------------
 
 def parse_md_file(file_path):
     """Parses saved daily markdown files back into structured dictionaries."""
@@ -127,9 +120,6 @@ def aggregate_local_papers(date_filter_func, top_n=15):
     sorted_papers = sorted(combined_papers.values(), key=lambda x: x["upvotes"], reverse=True)
     return sorted_papers[:top_n]
 
-# -------------------------------------------------------------------
-# 3. PIPELINE EXECUTION
-# -------------------------------------------------------------------
 
 def run_pipeline():
     today = datetime.datetime.now().date()
