@@ -32,5 +32,8 @@ jobs:
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        
+        mkdir -p daily_papers weekly_papers monthly_papers
+        
         git add daily_papers/ weekly_papers/ monthly_papers/
         git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update: Hugging Face Paper Summaries" && git push)
