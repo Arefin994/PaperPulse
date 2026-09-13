@@ -14,7 +14,13 @@ def fetch_hf_daily_papers():
     return response.json()
 
 def process_daily_items(raw_items, limit=10):
-    sorted_items = sorted(raw_items, key=lambda x: x.get("upvotes", 0), reverse=True)[:limit]
+    # Sort using the nested paper.upvotes key safely
+    sorted_items = sorted(
+        raw_items, 
+        key=lambda x: x.get("paper", {}).get("upvotes", 0), 
+        reverse=True
+    )[:limit]
+    
     processed = []
     
     for item in sorted_items:
@@ -22,7 +28,9 @@ def process_daily_items(raw_items, limit=10):
         arxiv_id = paper_info.get("id", "N/A")
         title = paper_info.get("title", "No Title").strip().replace("\n", " ")
         summary = paper_info.get("summary", "No Abstract Available").strip().replace("\n", " ")
-        upvotes = item.get("upvotes", 0)
+        
+        # Access upvotes from the nested paper object
+        upvotes = paper_info.get("upvotes", 0)
 
         processed.append({
             "title": title,
